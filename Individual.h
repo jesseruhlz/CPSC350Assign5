@@ -1,6 +1,6 @@
-#this is a base class for the individual with their i.d., name and level
-#this will be inherited by the student and the faculty member
-#once inherited, the individual will add their specific attributes in their class
+//this is a base class for the individual with their i.d., name and level
+//this will be inherited by the student and the faculty member
+//once inherited, the individual will add their specific attributes in their class
 #include <iostream>
 #ifndef included
 #define included
@@ -16,7 +16,7 @@ class Individual{
     ~Individual();
 
     int getID();
-    void setID();
+    void setID(int w);
 
     string getName();
     string getLevel();
