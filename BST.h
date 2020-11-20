@@ -1,60 +1,45 @@
-class TreeNode{
-  public:
-    TreeNode();
-    TreeNode(int k);
-    ~TreeNode();
-
-    int key;
-    //could do like <T> data for bst with any data type
-    //or could let Student class be your data
-    TreeNode *left;
-    TreeNode *right;
-};
-
-TreeNode::TreeNode(){
-  left = NULL;
-  right = NULL;
-}
-
-TreeNode::TreeNode(int k){
-  key = k;
-  left = NULL;
-  right = NULL;
-}
-
-TreeNode::~TreeNode(){
-  // research this on our own
-}
+#include "TreeNode.h"
+using namespace std;
+template <class T>
 
 class BST{
   private:
-    TreeNode *root;
+    TreeNode<T> *root;
+    int size;
   public:
     BST();
     ~BST();
 
-    bool searchNode(int value); //our key is the value in this example
-    void insertNode(int value);
-    bool deleteNode(int value);
+    bool searchNode(T value); //our key is the value in this example
+    void insertNode(T value);
+    bool deleteNode(T value);
 
-    bool isEmpty();
-    unsigned int getSize();
+    bool isEmpty(){
+      return (size == 0);
+    }
+    unsigned int getSize(){
+      return size;
+    }
     int getMin();
     int getMax();
     void recPrint(TreeNode *node);
+    void printEntireTree();
 
     TreeNode* getSuccessor(TreeNode *d); //d represents the node to be deleted
 };
 
-BST::BST(){
+template <class T>
+BST<T>::BST(){
   root = NULL;
+  size = 0;
 }
-
-BST::BST(){
+template <class T>
+BST<T>::~BST(){
   //iterate and delete => 0(n)
 }
 
-void BST::recPrint(TreeNode * node){
+template <class T>
+void BST<T>::recPrint(TreeNode<T> *node){
   if(node != NULL){
     recPrint(node->left);
     cout << node->key << endl; //cout << node->value << endl;
@@ -62,12 +47,14 @@ void BST::recPrint(TreeNode * node){
   }
 }
 
-void BST::printEntireTree(){
+template <class T>
+void BST<T>::printEntireTree(){
   recPrint(root);
 }
 
-int BST::getMax(){
-  TreeNode *current = root;
+template <class T>
+int BST<T>::getMax(){
+  TreeNode<T> *current = root;
 
   if(isEmpty())
     return NULL;
@@ -79,16 +66,17 @@ int BST::getMax(){
   return current->key;
 }
 
-void BST::insertNode(int value){
+template <class T>
+void BST<T>::insertNode(T value){
   //creat the node first
-  TreeNode *node = new TreeNode(value); // passes/ initializes value into key
+  TreeNode<T> *node = new TreeNode<T>(value); // passes/ initializes value into key
   if(isEmpty()){
     root = node;
   }
   else{
     //tree is not empty
-    TreeNode *current = root;
-    TreeNode *parent = NULL;
+    TreeNode<T> *current = root;
+    TreeNode<T> *parent = NULL;
 
     while (true){
       parent = current;
@@ -114,13 +102,14 @@ void BST::insertNode(int value){
   }
 }
 
-bool BST::searchNode(int value){
+template <class T>
+bool BST<T>::searchNode(T value){
   if(isEmpty())
     return false;
   else{
     //tree node is not empty, lets find the value
-    TreeNode *current = root;
-    while(current->key !=){
+    TreeNode<T> *current = root;
+    while(current->key != k){
       if(value < current->key)
         current = current->left;
       else
@@ -132,13 +121,14 @@ bool BST::searchNode(int value){
   return true;
 }
 
-bool BST::deleteNode(int k){
+template <class T>
+bool BST<T>::deleteNode(T k){
   if(isEmpty())
     return false;
 
   //you can leverage search to determine whether value before proceeding
-   TreeNode *current = root;
-   TreeNode * parent = root;
+   TreeNode<T> *current = root;
+   TreeNode<T> *parent = root;
    bool isLeftChild = true;
 
    //usual code to find a TreeNode
@@ -204,7 +194,7 @@ bool BST::deleteNode(int k){
    }
    else{
      //node to be deleted has two children
-     TreeNode *successor = getSuccessor(current);
+     TreeNode<T> *successor = getSuccessor(current);
 
      if(current == root){
        root = successor;
@@ -222,10 +212,10 @@ bool BST::deleteNode(int k){
 }
 
 // d represents the node we are deleting
-TreeNode* BST::getSuccessor(TreeNode *d){
-  TreeNode *sp = d;
-  TreeNode *successor = d;
-  TreeNode *current = d->right;
+TreeNode* BST::getSuccessor(TreeNode<T> *d){
+  TreeNode<T> *sp = d;
+  TreeNode<T> *successor = d;
+  TreeNode<T> *current = d->right;
 
   while(current != NULL)
   {
