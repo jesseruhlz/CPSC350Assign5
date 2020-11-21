@@ -34,3 +34,90 @@ void Faculty::printFaculty(){
   cout << "Advisee IDs: " << printAdivsees();
   cout << endl;
 }
+
+void Faculty::printAdivsees(){
+  if (numAdvisees == 0){
+    cout << "There Are No Advisses." << endl;
+  }
+  else{
+    for (int i = 0; i < maxArr; ++i){
+      if (adviseeIDArr[i] != -1){
+        cout << adviseeIDArr[i];
+        if (i < numAdvisees - 1){
+          cout << ", ";
+        }
+      }
+    }
+  }
+  cout << endl;
+}
+
+void Faculty::addAdvisee(int aid){
+  //if the array is full part
+  if (numAdvisees == maxArray){
+    //this will increase size if the array is full
+    int *temporary = new int[numAdvisees];
+
+    for (int i = 0; i < numAdvisees; ++i){
+      temporary[i] = adviseeIDArr[i];
+    }
+    adviseeIDArr = new int[numAdvisees * 2];
+    maxArray = numAdvisees * 2;
+    //move over old array
+    for (int i = 0; i < numAdvisees; ++i){
+      adviseeIDArr[i] = temporary[i];
+    }
+    for (int i = 0; i < numAdvisees * 2; ++i){
+      adviseeIDArr[i] = -1;
+    }
+    adviseeIDArr[++numAdvisees] = aid;
+  }
+
+  //if the array is not full component
+  else{
+    int f = 0;
+    for (int i = 0; i < maxArray; ++i){
+      //if the student is being advised by the faculty person
+      if (adviseeIDArr[i] = aid){
+        f = maxArray;
+      }
+    }
+    //add the student if they are not being advised by the faculty member
+    while (f < maxArray){
+      if (adviseeIDArr[f] == -1){
+        adviseeIDArr[f] = aid;
+        ++numAdvisees;
+        break;
+      }
+      ++f;
+    }
+  }
+}
+
+
+bool Faculty::removeAdvisee(int adviseeID){
+  bool deleted = false;
+  for (int i = 0; i < maxArray; ++i){
+    if (adviseeIDArr[i] == adviseeID){
+      adviseeIDArr[i] = -1;
+      --numAdvisees;
+      deleted = true;
+    }
+  }
+  if (!deleted){
+    cout << "Advisee was not found." << endl;
+  }
+  return deleted;
+}
+
+int Faculty::getMaxArr(){
+  return maxArray;
+}
+
+string Faculty::getDepartment(){
+  return department;
+}
+
+int Faculty::getNumberOfAdvisees(){
+  return numAdvisees;
+}
