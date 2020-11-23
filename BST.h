@@ -24,6 +24,9 @@ class BST{
     int getMax();
     void recPrint(TreeNode *node);
     void printEntireTree();
+    TreeNode<T>* getRoot(){
+      return root;
+    }
 
     TreeNode* getSuccessor(TreeNode *d); //d represents the node to be deleted
 };

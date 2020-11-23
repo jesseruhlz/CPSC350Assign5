@@ -4,11 +4,11 @@
 using namespace std;
 
 Individual::Individual(){
-
+  //default constructor
 }
 
 Individual::~Individual(){
-
+  //destructor
 }
 
 int Individual::getID(){

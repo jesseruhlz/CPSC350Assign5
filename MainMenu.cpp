@@ -12,6 +12,7 @@ MainMenu::~MainMenu(){
 
 void MainMenu::Welcome(){
   cout << "\n**** Student & Faculty Records Database ****\n";
+  cout << "\n**** Type in a number to declare action ****\n";
   displayMainMenu();
 }
 

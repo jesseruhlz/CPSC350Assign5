@@ -20,6 +20,7 @@ class Faulty : public Individual
     void printAdivsees();
 
     void addAdvisee(int aid);
+    //option 12
     bool removeAdvisee(int adviseeID);
     int getMaxArr();
     string getDepartment();

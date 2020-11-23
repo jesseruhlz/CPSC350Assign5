@@ -15,4 +15,4 @@ class MainMenu
 
     void Welcome();
     void displayMainMenu();
-}
+};

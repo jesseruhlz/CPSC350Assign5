@@ -25,8 +25,12 @@ class DoublyList{
 
     //helper functions
     void printList();
-    bool isEmpty();
-    unsigned int getSize();
+    bool isEmpty(){
+      return (size == 0);
+    }
+    unsigned int getSize(){
+      return size;
+    }
 };
 
 //seperate file .cpp, implementation

@@ -24,7 +24,7 @@ Faculty::Faculty(int i, string n, string l, string d){
 Faculty::~Faculty(){
   //destructor
   delete[] adviseeIDArr;
-}
+};
 
 void Faculty::printFaculty(){
   cout << "Faculty ID: " << id << endl;
@@ -40,7 +40,7 @@ void Faculty::printAdivsees(){
     cout << "There Are No Advisses." << endl;
   }
   else{
-    for (int i = 0; i < maxArr; ++i){
+    for (int i = 0; i < maxArray; ++i){
       if (adviseeIDArr[i] != -1){
         cout << adviseeIDArr[i];
         if (i < numAdvisees - 1){
@@ -97,6 +97,7 @@ void Faculty::addAdvisee(int aid){
 
 bool Faculty::removeAdvisee(int adviseeID){
   bool deleted = false;
+  //gp through list, if the advisee id is found then delete from lsit
   for (int i = 0; i < maxArray; ++i){
     if (adviseeIDArr[i] == adviseeID){
       adviseeIDArr[i] = -1;

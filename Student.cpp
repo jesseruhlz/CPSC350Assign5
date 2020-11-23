@@ -25,6 +25,7 @@ void Student::setAdvisor(int aid){
   advisorID = aid;
 }
 
+
 void Student::printStudent(){
   cout << "Student ID: " << id << endl;
   cout << "Student Name: " << name << endl;

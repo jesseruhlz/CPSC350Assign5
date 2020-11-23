@@ -12,8 +12,10 @@ class Student: public Individual
     Student();
     Student(int i, string n, string l, string mf, double g, int af);
     ~Student();
-
+    //option 11
+    //change advisor for student
     void setAdvisor(int aid);
+    
     void printStudent();
 
     double getGPA();
