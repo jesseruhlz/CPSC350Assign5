@@ -7,7 +7,7 @@ class TreeNode{
       data = T();
       key = -1;
       left = NULL;
-      right = NULL
+      right = NULL;
     }
     TreeNode(T* d, int k){
       data = d;

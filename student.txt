@@ -1,16 +1,16 @@
 2
 ***
-1234
-Jesse Ruhl
-Junior
-3.4
-Computer Science
-4321
-***
 5678
-Sakuta
+Peter
+Junior
+3.6
+Math
+8765
+***
+1234
+Jesse
 Junior
 3.5
-Undecided
-8765
+CPSC
+4321
 ***

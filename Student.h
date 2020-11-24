@@ -6,16 +6,15 @@ class Student: public Individual
 {
   public:
     double GPA;
-    string major;
+    string majorField;
     int advisorID;
 
     Student();
-    Student(int i, string n, string l, string mf, double g, int af);
+    Student(int i, string n, string l, double g, string m, int af);
     ~Student();
     //option 11
     //change advisor for student
     void setAdvisor(int aid);
-    
     void printStudent();
 
     double getGPA();

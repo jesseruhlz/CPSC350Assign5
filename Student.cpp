@@ -8,7 +8,7 @@ Student::Student(){
   //will remain empty bc we should not have a default student
 }
 
-Student::Student(int i, string n, string l, string mf, double g, int af){
+Student::Student(int i, string n, string l, double g, string mf, int af){
   id = i;
   name = n;
   level = l;
@@ -25,6 +25,10 @@ void Student::setAdvisor(int aid){
   advisorID = aid;
 }
 
+int Student::getAdvisorID(){
+  return advisorID;
+}
+
 
 void Student::printStudent(){
   cout << "Student ID: " << id << endl;
@@ -32,13 +36,13 @@ void Student::printStudent(){
   cout << "Grade Level: " << level << endl;
   cout << "Major: " << majorField << endl;
   cout << "GPA: " << GPA << endl;
-  cout << "Advisor ID: " << advisorID;
+  //cout << "Advisor ID: " << advisorID;
 
   if (advisorID == -1){
-    cout << "No advisor assigned." << endl;
+    cout << "Advisor ID: No advisor assigned." << endl;
   }
   else{
-    cout << advisorID << endl;
+    cout << "Advisor ID: " << advisorID << endl;
   }
 }
 

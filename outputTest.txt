@@ -1,0 +1,22 @@
+3
+***
+5678
+Peter
+Junior
+3.6
+Math
+8765
+***
+1234
+Jesse
+Junior
+3.5
+CPSC
+4321
+***
+2468
+Armin
+Senior
+3.5
+Cognitive Science
+-1

@@ -21,4 +21,4 @@ class Individual{
     string getName();
     string getLevel();
 };
-#endif;
+#endif

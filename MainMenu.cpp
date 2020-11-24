@@ -2,13 +2,9 @@
 #include "MainMenu.h"
 using namespace std;
 
-MainMenu::MainMenu(){
-  //default constructor
-}
+MainMenu::MainMenu(){};
 
-MainMenu::~MainMenu(){
-  //destructor
-}
+MainMenu::~MainMenu(){};
 
 void MainMenu::Welcome(){
   cout << "\n**** Student & Faculty Records Database ****\n";

@@ -3,6 +3,7 @@
 #include "BST.h"
 #include "GenStack.h"
 #include "MainMenu.h"
+//#include "TreeNode.h"
 using namespace std;
 
 class DataBase
@@ -22,7 +23,7 @@ class DataBase
     void printMasterFaculty(TreeNode<Faculty> *n);
     //option 3 & 4
     //these two functions will print name/info of advisee for student or name/info of afvisee for fauclty
-    void outputMasterStudent(TreeNode<Student> *n, string s);
+    void outputMasterStudent(TreeNode<Student> *n, ofstream& outfile);
     void outputMasterFaculty(TreeNode<Faculty> *n, string s);
 
     //option 5 & 6
@@ -43,7 +44,7 @@ class DataBase
     TreeNode<Student>* getMasterStudentRoot();
     TreeNode<Faculty>* getMasterFacultyRoot();
 
-    int checkInput(int l , int u, string t);
+    int checkInput(int l , int u, string m);
     void saveTree(TreeNode<Student> *n);
     void runProgram();
 };

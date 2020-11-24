@@ -4,7 +4,7 @@
 #include "Individual.h"
 using namespace std;
 
-class Faulty : public Individual
+class Faculty : public Individual
 {
   public:
     string department;

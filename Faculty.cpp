@@ -1,9 +1,7 @@
 #include "Faculty.h"
 using namespace std;
 
-Faculty::Faculty(){
-  //default constructor
-}
+Faculty::Faculty(){};
 
 Faculty::Faculty(int i, string n, string l, string d){
   id = i;
@@ -31,7 +29,7 @@ void Faculty::printFaculty(){
   cout << "Advisor Name: " << name << endl;
   cout << "Level: " << level << endl;
   cout << "Department: " << department << endl;
-  cout << "Advisee IDs: " << printAdivsees();
+  //cout << "Advisee IDs: " << printAdivsees();
   cout << endl;
 }
 
