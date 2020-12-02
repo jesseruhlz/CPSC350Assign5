@@ -1,6 +1,7 @@
 #include <string>
 #include <fstream>
 #include "DataBase.h"
+#include <stack>
 using namespace std;
 
 DataBase::DataBase(){};
@@ -8,6 +9,7 @@ DataBase::~DataBase(){};
 
 void DataBase::readFile(){
   ifstream masterStudentFile;
+  ifstream masterFacultyFile;
 
   //reading thes student file provided
   int i = 0;
@@ -101,9 +103,97 @@ void DataBase::readFile(){
     cout << "The student table was not found. Therfore starting application with no students in data base" << endl;
   }
   masterStudentFile.close();
-
+  //END OF READING STUDENT TEXT FILE
   //will add masterFacultyFile opening and reading here
   //will be very similar to masterStudentFaculty but will different vars and values being read
+  //reading the facult files begin HERE
+  int numberOfFaculty = 0;
+  int fi = 0;
+  string fn = "";
+  string fl = "";
+  string fd = "";
+  int advID = 0;
+
+  int lineCount = 1;
+  int createdCount = 0;
+  int na = 0;
+  masterFacultyFile.open("facultyTable.txt");
+  if (masterFacultyFile.is_open()){
+    try{
+      getline(masterFacultyFile, line); //number of faculty in file
+      if (line != ""){
+        numberOfFaculty = stoi(line);
+      }
+    }
+    catch (exception e){
+      cout << "*** Incorrect Format ***" << endl;
+    }
+
+    while (getline(masterFacultyFile,  line)){
+      switch (lineCount){
+        case 1:
+        {
+          if (line != "***"){
+            cout << "***Incorrect Format ***" << endl;
+          }
+          break;
+        }
+        case 2:
+        {
+          fi = stoi(line);
+          break;
+        }
+        case 3:
+        {
+          fn = line;
+          break;
+        }
+        case 4:
+        {
+          fl = line;
+          break;
+        }
+        case 5:
+        {
+          fd = line;
+          break;
+        }
+        //can have multiple advisees so take a x amount of lines
+        case 6:
+        {
+          try{
+            na = stoi(line);
+          }
+          catch (exception e){
+            cout << "*** Incorrect format ***" << endl;
+          }
+          Faculty *fac = new Faculty(fi, fn, fl, fd);
+          createdCount++;
+          for (int k = 0; k < na; ++k){
+            getline(masterFacultyFile, line);
+            advID = stoi(line);
+            fac->addAdvisee(advID);
+          }
+          //here we will create the faculty node and insert it into the tree
+          TreeNode<Faculty> *facNode = new TreeNode<Faculty>(fac, fi);
+          masterFaculty.insert(facNode);
+          break;
+        }
+        default:break;
+      }
+      ++lineCount;
+      if (createdCount == numberOfFaculty){
+        break;
+      }
+      if (lineCount > 6){
+        lineCount = 1;
+      }
+    }
+  }
+  else{
+    cout << "*** Faculty Table was not found, therefore creating with no faculty in it. ***" << endl;
+  }
+  masterFacultyFile.close();
 }
 
 //here is where we will read the trees to a file
@@ -119,7 +209,16 @@ void DataBase::writeFile(){
     //n->printRecursion(TreeNode<Student> *n, masterStudentFile);
   }
   masterStudentFile.close();
+
   //will write the faculty tree like above code here
+  ofstream masterFacultyFile;
+  masterFacultyFile.open("outputFacultyTable.txt");
+  if (masterFacultyFile.is_open()){
+    masterFacultyFile << masterFaculty.getSize() << endl;
+    TreeNode<Faculty> *n = masterFaculty.getRoot();
+    outputMasterFaculty(n, masterFacultyFile);
+  }
+  masterFacultyFile.close();
 
   cout << "*** Database is written to file ***" << endl;
 }
@@ -140,10 +239,23 @@ void DataBase::printMasterStudent(TreeNode<Student> *n){
   }
 }
 
-void DataBase::outputMasterStudent(TreeNode<Student> *n, ofstream& outfile/*string s*/){
-  //ofstream outfile;
-  //outfile.open(s);
+void DataBase::printMasterFaculty(TreeNode<Faculty> *n){
+  if (n != NULL){
+    if (n->left != NULL){
+      printMasterFaculty(n->left);
+    }
+    n->data->printFaculty();
+    cout << endl;
+    if (n->right != NULL){
+      printMasterFaculty(n->right);
+    }
+  }
+  else{
+    cout << "*** Faculty Tree is empty ***" << endl;
+  }
+}
 
+void DataBase::outputMasterStudent(TreeNode<Student> *n, ofstream& outfile/*string s*/){
   if (n != NULL){
     outfile << "***" << endl;
     //this will oputput student data from the tree into the file
@@ -154,17 +266,8 @@ void DataBase::outputMasterStudent(TreeNode<Student> *n, ofstream& outfile/*stri
     outfile << n->data->getMajor() << endl;
     outfile << n->data->getAdvisorID() << endl;
 
-    //this is the almost the same as below printRecursion(...)
-    /*
-    if (n->left != NULL){
-      outputMasterStudent(n->left, s);
-    }
-    if (n->right != NULL){
-      outputMasterStudent(n->right, s);
-    }*/
     //rearraning above to look like below
     outputMasterStudent(n->left, outfile);
-    //outfile << n->data << endl;
     outputMasterStudent(n->right, outfile);
   }
   //printRecursion(n, outfile);
@@ -174,7 +277,27 @@ void DataBase::outputMasterStudent(TreeNode<Student> *n, ofstream& outfile/*stri
     outfile << n->data << endl;
     outputMasterStudent(n->right, outfile);
   }*/
-  //outfile.close();
+}
+
+void DataBase::outputMasterFaculty(TreeNode<Faculty> *n, ofstream& outfile){
+  if (n != NULL){
+    outfile << "***" << endl;
+    outfile << n->data->getID() << endl;
+    outfile << n->data->getName() << endl;
+    outfile << n->data->getLevel() << endl;
+    outfile << n->data->getDepartment() << endl;
+    outfile << n->data->getNumberOfAdvisees() << endl;
+    //output the list of their advisees
+    if (n->data->getNumberOfAdvisees() > 0){
+      for (int i = 0; i < n->data->maxArray; ++i){
+        if (n->data->adviseeIDArr[i] != -1){
+          outfile << n->data->adviseeIDArr[i] << endl;
+        }
+      }
+    }
+    outputMasterFaculty(n->left, outfile);
+    outputMasterFaculty(n->right, outfile);
+  }
 }
 
 void DataBase::addStudent(){
@@ -253,8 +376,8 @@ void DataBase::addStudent(){
 
   if (!masterFaculty.isEmpty()){
     cout << "Does this student have an existing advisor?" << endl;
-    cout << "Yes" << endl;
-    cout << "No" << endl;
+    cout << "Press (1) for Yes" << endl;
+    cout << "Press (2) for No" << endl;
     while (true){
       answerInt = 0;
       answer = "";
@@ -305,12 +428,134 @@ void DataBase::addStudent(){
   Student *stud = new Student(i, name, level, gpa, major, advisor);
   TreeNode<Student> *studNode = new TreeNode<Student>(stud, i);
   masterStudent.insert(studNode);
+  //GenStack *studentStack = new GenStack();
+  //stack<Node *> stack;
+  //Node *curr = studNode;
+  //studentStack->push(masterStudent);
+//stack.push(curr);
+}
+
+//adding faculty will be similar to how we add the students
+void DataBase::addFaculty(){
+  cout << "*** Adding new faculty member ***" << endl;
+  int i;
+  string n;
+  string l;
+  string d;
+  int answerInt = 0;
+  int numEntries = 0;
+  string answer = "";
+
+  while (true){
+    cout << "ID of Faculty Member: ";
+    answerInt = 0;
+    answer = "";
+    cin >> answer;
+    try{
+      i = stoi(answer);
+      if(i > 0){
+        break;
+      }
+    }
+    catch (exception e){
+      cout << "*** Incorrect input ***" << endl;
+    }
+  }
+
+  string line;
+  cout << endl;
+  cout << "Name of faculty member: ";
+  cin.ignore();
+  getline(cin, n);
+  cout << endl;
+  cout << "Level of faculty member: ";
+  getline(cin, l);
+  cout << endl;
+  cout << "Department of faculty member: ";
+  getline(cin, d);
+
+  Faculty *fac = new Faculty(i,n,l,d);
+  //adding their advisees
+  if (!masterStudent.isEmpty()){
+    cout << "Does this faculty member have and advisees?" << endl;
+    cout << "Press (1) for Yes" << endl;
+    cout << "Press (2) for No" << endl;
+
+    while (true){
+      answerInt = 0;
+      answer = "";
+      cin >> answer;
+      try{
+        answerInt = stoi(answer);
+        if (answerInt == 1 || answerInt == 2){
+          break;
+        }
+      }
+      catch (exception e){
+        cout << "*** Incorrect Input ***" << endl;
+      }
+    }
+    if (answerInt == 1 && !masterStudent.isEmpty()){
+      cout << endl;
+      cout << "How many advisees does this member have? " << endl;
+      while (true){
+        cout << "Enter an integer: ";
+        answerInt = 0;
+        answer = "";
+        cin >> answer;
+
+        try{
+          answerInt = stoi(answer);
+          if (answerInt > 0 && answerInt <= masterStudent.getSize()){
+            numEntries = answerInt;
+            break;
+          }
+          else{
+            cout << "*** Enter an integer less than the size of the student tree: " << masterStudent.getSize()<< endl;
+          }
+        }
+        catch (exception e){
+          cout << "*** Incorrect input ***" << endl;
+        }
+      }
+      for (int v = 0; v < numEntries; ++v){
+        while (true){
+          cout << "Enter a students ID: ";
+          answerInt = 0;
+          answer = "";
+          cin >> answer;
+          try{
+            answerInt = stoi(answer);
+            if(masterStudent.isInTree(answerInt)){
+              fac->addAdvisee(answerInt);
+              masterStudent.search(answerInt)->setAdvisor(i);
+              break;
+            }
+            else{
+              cout << "*** Student not found in the tree ***" << endl;
+            }
+          }
+          catch (exception e){
+            cout << "*** input an integer ***" << endl;
+          }
+        }
+      }
+    }
+  }
+  TreeNode<Faculty> *facNode = new TreeNode<Faculty>(fac, i);
+  masterFaculty.insert(facNode);
 }
 
 void DataBase::addStudentFromFile(int i, string n, string l, double g, string m, int a){
   Student *stud = new Student(i ,n, l, g, m, a);
   TreeNode<Student> *studNode = new TreeNode<Student>(stud, i);
   masterStudent.insert(studNode);
+}
+
+void DataBase::addFacultyFromFile(int i, string n, string l, string d){
+  Faculty *fac = new Faculty(i, n, l, d);
+  TreeNode<Faculty> *facNode = new TreeNode<Faculty>(fac, i);
+  masterFaculty.insert(facNode);
 }
 
 void DataBase::displayStudentInformation(int i){
@@ -322,8 +567,21 @@ void DataBase::displayStudentInformation(int i){
   }
 }
 
+void DataBase::displayFacultyInformation(int i){
+  if(masterFaculty.isInTree(i)){
+    masterFaculty.search(i)->printFaculty();
+  }
+  else{
+    cout << "*** Faculty is not in the system ***" << endl;
+  }
+}
+
 TreeNode<Student>* DataBase::getMasterStudentRoot(){
   return masterStudent.getRoot();
+}
+
+TreeNode<Faculty>* DataBase::getMasterFacultyRoot(){
+  return masterFaculty.getRoot();
 }
 
 int DataBase::checkInput(int l, int u, string m){
@@ -351,6 +609,22 @@ int DataBase::checkInput(int l, int u, string m){
   }
 }
 
+/*
+void DataBase::nodeToStack(TreeNode<Student> *root){
+  GenStack<Student> s;
+  Student *curr = root;
+  while (s != NULL || curr != NULL){
+    if (curr != NULL){
+      s.push(curr);
+      curr = curr->left;
+    }
+    else{
+      curr = curr->right;
+    }
+  }
+}
+*/
+
 void DataBase::runProgram(){
   bool isRunning = true;
   while (isRunning){
@@ -375,14 +649,14 @@ void DataBase::runProgram(){
       //print all faculty and their info
       case 2:
       {
-        /*
+
         if (masterFaculty.isEmpty()){
           cout << "*** No faculty in the database ***" << endl;
           break;
         }
         cout << endl;
         printMasterFaculty(masterFaculty.getRoot());
-        */
+
         break;
       }
 
@@ -411,14 +685,14 @@ void DataBase::runProgram(){
       //find and display faculty info given their id
       case 4:
       {
-        /*
+
         if (masterFaculty.isEmpty()){
           cout << "*** No faculty in the database ***" << endl;
           break;
         }
         int t;
         while (true){
-          t = checkInput(0,1000, "Please enter a faculty ID: ");
+          t = checkInput(0,10000, "Please enter a faculty ID: ");
 
           if(masterFaculty.isInTree(t)){
             displayFacultyInformation(t);
@@ -427,14 +701,14 @@ void DataBase::runProgram(){
           else{
             cout << "*** That faculty member is not in the database ***" << endl;
           }
-        }*/
+        }
         break;
       }
 
       //print name and info of student advisor given the students ID
       case 5:
       {
-        /*
+
         if (masterStudent.isEmpty()){
           cout << "*** No students in database ***" << endl;
           break;
@@ -444,7 +718,7 @@ void DataBase::runProgram(){
         printMasterStudent(masterStudent.getRoot());
 
         while(true){
-          t = checkInput(0,1000, "Please enter a student ID: ");
+          t = checkInput(0,10000, "Please enter a student ID: ");
           if (masterStudent.isInTree(t)){
             displayFacultyInformation(masterStudent.search(t)->getAdvisorID());
             break;
@@ -452,14 +726,14 @@ void DataBase::runProgram(){
           else{
             cout << "*** Student is not in the database ***" << endl;
           }
-        }*/
+        }
         break;
       }
 
       //given, a faculty id, print all the names and info of their numAdvisees
       case 6:
       {
-        /*
+
         if(masterFaculty.isEmpty()){
           cout << "*** No faculty in the database ***" << endl;
           break;
@@ -468,12 +742,13 @@ void DataBase::runProgram(){
         cout << "*** Faculty members in the database ***" << endl;
         printMasterFaculty(masterFaculty.getRoot());
         while (true){
-          t = checkInput(0,1000, "Please enter a faculty ID: ");
+          t = checkInput(0,10000, "Please enter a faculty ID: ");
           if(masterFaculty.isInTree(t)){
             Faculty *fac = masterFaculty.search(t);
             for (int i = 0; i < fac->getMaxArr(); ++i){
               if (fac->adviseeIDArr[i] != -1){
                 displayStudentInformation(fac->adviseeIDArr[i]);
+                cout << "***" << endl;
               }
             }
             break;
@@ -482,7 +757,7 @@ void DataBase::runProgram(){
             cout << "*** Faculty not in the database ***" << endl;
           }
         }
-        */
+
         break;
       }
 
@@ -526,18 +801,20 @@ void DataBase::runProgram(){
       //add a new faculty member
       case 9:
       {
-        /*
+
         addFaculty();
         cout << "*** Faculty member added ***" << endl;
-        cpit << "*** Press '0' to display options ***" << endl;
-        */
+        cout << "*** Press '0' to display options ***" << endl;
+
         break;
       }
 
       //deletea faculty member given the id
+      //this option is having trouble and keeps prompting the user to input a faculty id even
+      //after they have delted a faculty member
       case 10:
       {
-        /*
+
         int t;
         if (masterFaculty.isEmpty()){
           cout << "*** No faculty members are in this database ***" << endl;
@@ -547,7 +824,7 @@ void DataBase::runProgram(){
         printMasterFaculty(masterFaculty.getRoot());
 
         while (true){
-          t = checkInput(0,1000, "Please enter a daculty ID: ");
+          t = checkInput(0,10000, "Please enter a faculty ID: ");
           if (masterFaculty.isInTree(t)){
             if (masterFaculty.search(t)->numAdvisees > 0){
               for (int i = 0; i < masterFaculty.search(t)->maxArray; ++i){
@@ -558,16 +835,20 @@ void DataBase::runProgram(){
             }
             masterFaculty.deleteNode(t);
             cout << "*** Faculty deleted ***" << endl;
+            break;
+          }
+          else{
+            cout << "*** Faculty is not in the database ***";
           }
         }
-        */
+
         break;
       }
 
       //change a students advisor given the students if and the new faculty memebr id
       case 11:
       {
-        /*
+
         if (masterFaculty.isEmpty()){
           cout << "*** No faculty members are in the database ***" << endl;
           break;
@@ -581,10 +862,10 @@ void DataBase::runProgram(){
         cout << "Current students in database: " << endl;
         printMasterStudent(masterStudent.getRoot());
         while (true){
-          s = checkInput(0,1000, "Please enter a student ID: ");
+          s = checkInput(0,10000, "Please enter a student ID: ");
           if (masterStudent.isInTree(s)){
             while (true){
-              f = checkInput(0,1000, "Please enter a faculty ID: ");
+              f = checkInput(0,10000, "Please enter a faculty ID: ");
               if (masterFaculty.isInTree(f)){
                 break;
               }
@@ -602,16 +883,68 @@ void DataBase::runProgram(){
         masterFaculty.search(f)->addAdvisee(s);
         cout << "*** Advisor was changed ***" << endl;
         cout << "*** Press '0' to display options ***" << endl;
-        */
+
         break;
       }
 
       //case 12 remove advisee from faculty member
+      case 12:
+      {
+        /*
+        if (masterFaculty.isEmpty()){
+          cout << "*** There are no faculty members in the databse ***" << endl;
+          break;
+        }
+        if (masterStudent.isEmpty()){
+          cout << "*** There are no students in the database ***" << endl;
+          break;
+        }
+        int f;
+        int s;
+        while (true){
+          f = checkInput(0,10000, "Enter a faculty ID: ");
+          if (masterFaculty.isInTree(f)){
+            cout << endl;
+            cout << "This member is in the database " << endl;
+            masterFaculty.search(f)->printAdivsees();
+            while (true){
+              s = checkInput(0,10000, "Enter a student ID: ");
+              if (masterStudent.isInTree(s)){
+                break;
+              }
+              else{
+                cout << endl;
+                cout << "*** That student is not in the database ***"<<endl;
+              }
+            }
+            break;
+          }
+          else{
+            cout << "*** That faculty is not in the database ***" << endl;
+          }
+        }
+        if (masterFaculty.search(f)->removeAdvisee(s)){
+          masterStudent.search(s)->setAdvisorID(-1);
+          cout << "*** Advisor removed from assigned student ***" << endl;
+        }
+        else{
+          cout << "*** Advisor was not removed from assigned student ***"<< endl;
+        }
+        */
+        break;
+      }
 
 
       //rollback come back to it later
       case 13:
       {
+        try{
+          //masterStudent = studentStack->pop();
+          //stack.pop();
+        }
+        catch (exception e){
+          cout << "Rollback is not available for this" << endl;
+        }
         break;
       }
 

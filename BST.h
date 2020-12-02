@@ -1,6 +1,7 @@
 #include "TreeNode.h"
 #include "Student.h"
 #include "Faculty.h"
+//#include "GenStack.h"
 using namespace std;
 template <class T>
 /*
@@ -579,4 +580,19 @@ class BST
             printRecursion(node->right, outfile);
           }
         }
+        /*
+        void inorderIterative(TreeNode<T> *root){
+          stack<Node *> s;
+          Node *curr = root;
+          while (curr != NULL || !s.isEmpty()){
+            while (curr != NULL){
+              s.push(curr);
+              curr = cur->left;
+            }
+            curr = s.top();
+            s.pop();
+            cout << curr->data << " " << endl;
+            curr = curr->right;
+          }
+        }*/
 };

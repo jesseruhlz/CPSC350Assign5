@@ -1,5 +1,6 @@
 //template class
 //will include both the header as well as implementation
+//#include "BST.h" using this to try and change argument for push to be a bst node being read into it
 #include <iostream>
 #include <fstream>
 using namespace std;

@@ -12,6 +12,9 @@ class DataBase
     BST<Student> masterStudent;
     BST<Faculty> masterFaculty;
 
+    //GenStack<Student> *studentStack;
+    GenStack<Faculty> *facultyStack;
+
     DataBase();
     ~DataBase();
 
@@ -24,7 +27,7 @@ class DataBase
     //option 3 & 4
     //these two functions will print name/info of advisee for student or name/info of afvisee for fauclty
     void outputMasterStudent(TreeNode<Student> *n, ofstream& outfile);
-    void outputMasterFaculty(TreeNode<Faculty> *n, string s);
+    void outputMasterFaculty(TreeNode<Faculty> *n, ofstream& outfile);
 
     //option 5 & 6
     //these functions will find and display student/faculty info given an id
@@ -45,6 +48,7 @@ class DataBase
     TreeNode<Faculty>* getMasterFacultyRoot();
 
     int checkInput(int l , int u, string m);
-    void saveTree(TreeNode<Student> *n);
+    void nodeToStack(TreeNode<Student> *n);
+    //void rollback();
     void runProgram();
 };

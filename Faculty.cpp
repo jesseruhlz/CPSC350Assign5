@@ -76,7 +76,7 @@ void Faculty::addAdvisee(int aid){
     int f = 0;
     for (int i = 0; i < maxArray; ++i){
       //if the student is being advised by the faculty person
-      if (adviseeIDArr[i] = aid){
+      if (adviseeIDArr[i] == aid){
         f = maxArray;
       }
     }
