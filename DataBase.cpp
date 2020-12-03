@@ -643,6 +643,7 @@ void DataBase::runProgram(){
         }
         cout << endl;
         printMasterStudent(masterStudent.getRoot());
+        cout << "*** Press '0' to display options ***" << endl;
         break;
       }
 
@@ -656,7 +657,7 @@ void DataBase::runProgram(){
         }
         cout << endl;
         printMasterFaculty(masterFaculty.getRoot());
-
+        cout << "*** Press '0' to display options ***" << endl;
         break;
       }
 
@@ -679,6 +680,7 @@ void DataBase::runProgram(){
             cout << "*** That student is not in the database ***" << endl;
           }
         }
+        cout << "*** Press '0' to display options ***" << endl;
         break;
       }
 
@@ -702,6 +704,7 @@ void DataBase::runProgram(){
             cout << "*** That faculty member is not in the database ***" << endl;
           }
         }
+        cout << "*** Press '0' to display options ***" << endl;
         break;
       }
 
@@ -727,6 +730,7 @@ void DataBase::runProgram(){
             cout << "*** Student is not in the database ***" << endl;
           }
         }
+        cout << "*** Press '0' to display options ***" << endl;
         break;
       }
 
@@ -757,7 +761,7 @@ void DataBase::runProgram(){
             cout << "*** Faculty not in the database ***" << endl;
           }
         }
-
+        cout << "*** Press '0' to display options ***" << endl;
         break;
       }
 
@@ -835,6 +839,7 @@ void DataBase::runProgram(){
             }
             masterFaculty.deleteNode(t);
             cout << "*** Faculty deleted ***" << endl;
+            cout << "*** Press '0' to display options ***" << endl;
             break;
           }
           else{
@@ -928,6 +933,7 @@ void DataBase::runProgram(){
         if (masterFaculty.search(f)->removeAdvisee(s)){
           masterStudent.search(s)->setAdvisor(-1);
           cout << "*** Advisor removed from assigned student ***" << endl;
+          cout << "*** Press '0' to display options ***" << endl;
         }
         else{
           cout << "*** Advisor was not removed from assigned student ***"<< endl;
@@ -940,13 +946,14 @@ void DataBase::runProgram(){
       //rollback come back to it later
       case 13:
       {
+        /*
         try{
           //masterStudent = studentStack->pop();
           //stack.pop();
         }
         catch (exception e){
           cout << "Rollback is not available for this" << endl;
-        }
+        }*/
         break;
       }
 
