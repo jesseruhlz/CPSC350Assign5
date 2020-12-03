@@ -890,7 +890,7 @@ void DataBase::runProgram(){
       //case 12 remove advisee from faculty member
       case 12:
       {
-        /*
+
         if (masterFaculty.isEmpty()){
           cout << "*** There are no faculty members in the databse ***" << endl;
           break;
@@ -899,14 +899,16 @@ void DataBase::runProgram(){
           cout << "*** There are no students in the database ***" << endl;
           break;
         }
+
         int f;
         int s;
         while (true){
           f = checkInput(0,10000, "Enter a faculty ID: ");
           if (masterFaculty.isInTree(f)){
             cout << endl;
-            cout << "This member is in the database " << endl;
+            cout << "This member is advising: " << endl;
             masterFaculty.search(f)->printAdivsees();
+
             while (true){
               s = checkInput(0,10000, "Enter a student ID: ");
               if (masterStudent.isInTree(s)){
@@ -924,13 +926,13 @@ void DataBase::runProgram(){
           }
         }
         if (masterFaculty.search(f)->removeAdvisee(s)){
-          masterStudent.search(s)->setAdvisorID(-1);
+          masterStudent.search(s)->setAdvisor(-1);
           cout << "*** Advisor removed from assigned student ***" << endl;
         }
         else{
           cout << "*** Advisor was not removed from assigned student ***"<< endl;
         }
-        */
+
         break;
       }
 
