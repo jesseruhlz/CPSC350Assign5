@@ -23,7 +23,7 @@ void DataBase::readFile(){
   int numberOfStudents = 0;
   int lineCounter = 1;
 
-  masterStudentFile.open("student.txt");
+  masterStudentFile.open("studentTable.txt");
 
   if (masterStudentFile.is_open()){
     try{
@@ -200,7 +200,7 @@ void DataBase::readFile(){
 void DataBase::writeFile(){
   ofstream masterStudentFile;
 
-  masterStudentFile.open("outputTest.txt");
+  masterStudentFile.open("studentTable.txt");
   //use recursion to ouput master student to the table file
   if (masterStudentFile.is_open()){
     masterStudentFile << masterStudent.getSize() << endl; //gets the number of students
@@ -212,7 +212,7 @@ void DataBase::writeFile(){
 
   //will write the faculty tree like above code here
   ofstream masterFacultyFile;
-  masterFacultyFile.open("outputFacultyTable.txt");
+  masterFacultyFile.open("facultyTable.txt");
   if (masterFacultyFile.is_open()){
     masterFacultyFile << masterFaculty.getSize() << endl;
     TreeNode<Faculty> *n = masterFaculty.getRoot();
@@ -544,6 +544,9 @@ void DataBase::addFaculty(){
   }
   TreeNode<Faculty> *facNode = new TreeNode<Faculty>(fac, i);
   masterFaculty.insert(facNode);
+  //Rollback
+  //studentStack.push(masterStudent);
+  //facultyStack.push(masterFaculty);
 }
 
 void DataBase::addStudentFromFile(int i, string n, string l, double g, string m, int a){
@@ -793,6 +796,8 @@ void DataBase::runProgram(){
             masterStudent.deleteNode(t);
             cout << "*** Student Deleted ***" << endl;
             cout << "*** Press '0' to display menu options ***" << endl;
+            //studentStack.push(masterStudent);
+            //facultyStack.push(masterFaculty);
             break;
           }
           else{
@@ -814,8 +819,6 @@ void DataBase::runProgram(){
       }
 
       //deletea faculty member given the id
-      //this option is having trouble and keeps prompting the user to input a faculty id even
-      //after they have delted a faculty member
       case 10:
       {
 
